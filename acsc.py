@@ -181,6 +181,8 @@ if __name__ == "__main__":
             # If num presets is -1, generate presets for all cars
             if args.num_presets == -1:
                 tot_for_track = math.ceil(len(cars)/max)
+            else:
+                tot_for_track = args.num_presets
             
             availabe_cars = cars.copy()
             
@@ -241,8 +243,8 @@ TRACK={track[0]}
 SUN_ANGLE={tod}
 PASSWORD={args.entry_pass}
 ADMIN_PASSWORD={args.admin_pass}
-UDP_PORT={args.uport}
-TCP_PORT={args.uport}
+UDP_PORT={args.udp_tcp_ports}
+TCP_PORT={args.udp_tcp_ports}
 HTTP_PORT=8081
 MAX_BALLAST_KG=150
 QUALIFY_MAX_WAIT_PERC=120
