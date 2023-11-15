@@ -64,25 +64,37 @@ def generate_car_list(root_folder, selected, verbose=False):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Custom Asseto Corsa server generation tool")
+    weather = parser.add_mutually_exclusive_group()
 
     parser.add_argument("name_tag", help="Name tag for distinguishing presets")
-    parser.add_argument("-a", "--admin-pass", metavar="admin_password", default='password', help="Specify admin password for server")
-    parser.add_argument("-c", "--car", metavar="car_folder", nargs='+', help="Specify car(s) folder(s) for custom generation")
-    parser.add_argument("-e", "--entry-pass", metavar="entry_password", default='', help="Specify admin password for server")
-    parser.add_argument("-f", "--folder", metavar="folder_location", default='./../', help="Specify custom folder location for game data")
-    parser.add_argument("-m", "--max-cars", metavar="car_amount", default=20, type=int, help="Specify max number of cars per preset")
-    parser.add_argument("-n", "--num-presets", metavar="preset_amount", default=1 ,type=int, help="Specify number of presets generated per track (-1: All Cars)")
-    parser.add_argument("-p", "--practice", metavar="minutes", default=60, type=int, help="Specify time in minutes for the practice session")
-    parser.add_argument("-q", "--qualify", metavar="minutes", default=0, type=int, help="Specify the time in minutes for the qualify session")
-    parser.add_argument("-r", "--race", metavar="laps", default=0,type=int, help="Specify number of laps in a race")
-    parser.add_argument("-s", "--server-extra", metavar="extra_file", default='extra_cfg.yml', help="Specify custom 'extra_cfg.yml' file")
-    parser.add_argument("-t", "--track", metavar="track_folder", nargs='+', help="Specify track(s) folder(s) for custom generation")
-    parser.add_argument("-u", "--udp-tcp-ports", metavar="port", default=9001,type=int, help="Specify the port where server is hosted")
-    parser.add_argument("-v", "--verbose", help="Enable verbose mode", action="store_true")
 
-    weather = parser.add_mutually_exclusive_group()
-    weather.add_argument("-d", "--dynamic", help="Enable dynamic weather option", action="store_true")
-    weather.add_argument("-w", "--weather", metavar="weather_file", default='weather.ini', help="Specify custom 'weather.ini' file")
+    parser.add_argument( "-a", "--admin-pass",    metavar="admin_password",  default='password',                help="Specify admin password for server")
+    parser.add_argument( "-b", "--back-mirror",   action="store_true",                                          help="Enable forced back mirror")
+    parser.add_argument( "-c", "--cars",          metavar="car_folder",      nargs='+',                         help="Specify car(s) folder(s) for custom generation")
+    weather.add_argument("-d", "--dynamic",       action="store_true",                                          help="Enable dynamic weather option")
+    parser.add_argument( "-e", "--entry-pass",    metavar="entry_password",  default='',                        help="Specify admin password for server")
+    parser.add_argument( "-f", "--folder",        metavar="folder_location", default='./../',                   help="Specify custom folder location for game data")
+    #g - free
+    #h - taken
+    #i - free
+    #j - free
+    #k - free
+    #l - free
+    parser.add_argument( "-m", "--max-cars",      metavar="car_amount",      default=20,              type=int, help="Specify max number of cars per preset")
+    parser.add_argument( "-n", "--num-presets",   metavar="preset_amount",   default=1,               type=int, help="Specify number of presets generated per track (-1: All Cars)")
+    parser.add_argument( "-o", "--online-port",   metavar="port",            default=8081,            type=int, help="Specify the port where server is hosted (HTTP)")
+    parser.add_argument( "-p", "--practice",      metavar="minutes",         default=60,              type=int, help="Specify time in minutes for the practice session")
+    parser.add_argument( "-q", "--qualify",       metavar="minutes",         default=0,               type=int, help="Specify the time in minutes for the qualify session")
+    parser.add_argument( "-r", "--race",          metavar="laps",            default=0,               type=int, help="Specify number of laps in a race")
+    parser.add_argument( "-s", "--server-extra",  metavar="extra_file",      default='extra_cfg.yml',           help="Specify custom 'extra_cfg.yml' file")
+    parser.add_argument( "-t", "--tracks",        metavar="track_folder",    nargs='+',                         help="Specify track(s) folder(s) for custom generation")
+    parser.add_argument( "-u", "--udp-tcp-port",  metavar="port",            default=9001,            type=int, help="Specify the port where server is hosted")
+    parser.add_argument( "-v", "--verbose",       action="store_true",                                          help="Enable verbose mode")
+    weather.add_argument("-w", "--weather-file",  metavar="weather_file",    default='weather.ini',             help="Specify custom 'weather.ini' file")
+    #x - free
+    #y - free
+    #z - free
+
 
     args = parser.parse_args()
 
@@ -243,9 +255,9 @@ TRACK={track[0]}
 SUN_ANGLE={tod}
 PASSWORD={args.entry_pass}
 ADMIN_PASSWORD={args.admin_pass}
-UDP_PORT={args.udp_tcp_ports}
-TCP_PORT={args.udp_tcp_ports}
-HTTP_PORT=8081
+UDP_PORT={args.udp_tcp_port}
+TCP_PORT={args.udp_tcp_port}
+HTTP_PORT={args.online_port}
 MAX_BALLAST_KG=150
 QUALIFY_MAX_WAIT_PERC=120
 RACE_PIT_WINDOW_START=0
@@ -277,7 +289,7 @@ MAX_CONTACTS_PER_KM=2
 STABILITY_ALLOWED=0
 AUTOCLUTCH_ALLOWED=1
 TYRE_BLANKETS_ALLOWED=1
-FORCE_VIRTUAL_MIRROR=1
+FORCE_VIRTUAL_MIRROR={args.back_mirror}
 REGISTER_TO_LOBBY=1
 MAX_CLIENTS={max}
 NUM_THREADS=2
