@@ -20,18 +20,21 @@ def generate_track_list(root_folder, selected, verbose=False):
             if track.is_dir():
                 tracks_list.append(track.name)
     for track in tracks_list:
-        layouts = os.scandir(os.path.join(root_folder, track, "ui"))
-        lc=0
-        for layout in layouts:
-            if layout.is_dir():
-                folder_list.append((track,layout.name))
+        try:
+            layouts = os.scandir(os.path.join(root_folder, track, "ui"))
+            lc=0
+            for layout in layouts:
+                if layout.is_dir():
+                    folder_list.append((track,layout.name))
+                    if verbose:
+                        print("[Explorer] Found track '"+track+"' with layout '"+layout.name+"'")
+                    lc+=1
+            if lc==0:
+                folder_list.append((track,""))
                 if verbose:
-                    print("[Explorer] Found track '"+track+"' with layout '"+layout.name+"'")
-                lc+=1
-        if lc==0:
-            folder_list.append((track,""))
-            if verbose:
-                print("[Explorer] Found track '"+track+"' with no layouts")
+                    print("[Explorer] Found track '"+track+"' with no layouts")
+        except:
+            pass
     return folder_list
 
 def generate_car_list(root_folder, selected, verbose=False):
@@ -48,18 +51,21 @@ def generate_car_list(root_folder, selected, verbose=False):
             if car.is_dir():
                 cars_list.append(car.name)
     for car in cars_list:
-        skins = os.scandir(os.path.join(root_folder, car, "skins"))
-        lc=0
-        for skin in skins:
-            if skin.is_dir():
-                folder_list.append((car,skin.name))
+        try:
+            skins = os.scandir(os.path.join(root_folder, car, "skins"))
+            lc=0
+            for skin in skins:
+                if skin.is_dir():
+                    folder_list.append((car,skin.name))
+                    if verbose:
+                        print("[Explorer] Found car '"+car+"' with skin '"+skin.name+"'")
+                    lc+=1
+            if lc==0:
+                folder_list.append((car,""))
                 if verbose:
-                    print("[Explorer] Found car '"+car+"' with skin '"+skin.name+"'")
-                lc+=1
-        if lc==0:
-            folder_list.append((car,""))
-            if verbose:
-                print("[Explorer] Found car '"+car+"' with no skins")
+                    print("[Explorer] Found car '"+car+"' with no skins")
+        except:
+            pass
     return folder_list
 
 if __name__ == "__main__":
@@ -70,7 +76,7 @@ if __name__ == "__main__":
 
     parser.add_argument( "-a", "--admin-pass",    metavar="admin_password",  default='password',                help="Specify admin password for server")
     parser.add_argument( "-b", "--back-mirror",   action="store_true",                                          help="Enable forced back mirror")
-    parser.add_argument( "-c", "--cars",          metavar="car_folder",      nargs='+',                         help="Specify car(s) folder(s) for custom generation")
+    parser.add_argument( "-c", "--car",          metavar="car_folder",      nargs='+',                         help="Specify car(s) folder(s) for custom generation")
     weather.add_argument("-d", "--dynamic",       action="store_true",                                          help="Enable dynamic weather option")
     parser.add_argument( "-e", "--entry-pass",    metavar="entry_password",  default='',                        help="Specify admin password for server")
     parser.add_argument( "-f", "--folder",        metavar="folder_location", default='./../',                   help="Specify custom folder location for game data")
@@ -87,10 +93,10 @@ if __name__ == "__main__":
     parser.add_argument( "-q", "--qualify",       metavar="minutes",         default=0,               type=int, help="Specify the time in minutes for the qualify session")
     parser.add_argument( "-r", "--race",          metavar="laps",            default=0,               type=int, help="Specify number of laps in a race")
     parser.add_argument( "-s", "--server-extra",  metavar="extra_file",      default='extra_cfg.yml',           help="Specify custom 'extra_cfg.yml' file")
-    parser.add_argument( "-t", "--tracks",        metavar="track_folder",    nargs='+',                         help="Specify track(s) folder(s) for custom generation")
+    parser.add_argument( "-t", "--track",        metavar="track_folder",    nargs='+',                         help="Specify track(s) folder(s) for custom generation")
     parser.add_argument( "-u", "--udp-tcp-port",  metavar="port",            default=9001,            type=int, help="Specify the port where server is hosted")
     parser.add_argument( "-v", "--verbose",       action="store_true",                                          help="Enable verbose mode")
-    weather.add_argument("-w", "--weather-file",  metavar="weather_file",    default='weather.ini',             help="Specify custom 'weather.ini' file")
+    weather.add_argument("-w", "--weather",  metavar="weather_file",    default='weather.ini',             help="Specify custom 'weather.ini' file")
     #x - free
     #y - free
     #z - free
